@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.coffee_club.tco"
-    android:versionCode="1"
+    android:installLocation="auto"
+    android:versionCode="2"
     android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
