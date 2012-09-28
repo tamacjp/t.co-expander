@@ -1,0 +1,8 @@
+.project
+.classpath
+bin/
+gen/
+build.xml
+local.properties
+ant.properties
+t.co.keystore
