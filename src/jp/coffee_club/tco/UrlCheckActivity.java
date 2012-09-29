@@ -22,6 +22,8 @@ public class UrlCheckActivity extends Activity
             Pattern.compile("^http://tinyurl\\.com/"),
             Pattern.compile("^http://j\\.mp/"),
             Pattern.compile("^http://goo\\.gl/"),
+            Pattern.compile("^http://youtu\\.be/"),
+            Pattern.compile("^http://htn\\.to/"),
             // TODO: load from list or on/off setting
     };
 
