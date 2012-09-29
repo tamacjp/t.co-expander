@@ -3,5 +3,8 @@
     <string name="app_name">t.co Expander</string>
     <string name="msg_not_redirect">Not redirect URL.</string>
     <string name="msg_error_occur">Sorry, error occur.</string>
+    <string name="redirecting_to">Redirecting to</string>
+    <string name="go">Go</string>
+    <string name="nogo">Stop</string>
 
 </resources>

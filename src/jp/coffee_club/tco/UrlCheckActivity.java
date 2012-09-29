@@ -2,6 +2,7 @@
 package jp.coffee_club.tco;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -87,23 +88,42 @@ public class UrlCheckActivity extends Activity
      * URL redirect event
      */
     @Override
-    public void onRedirect(String url) {
-        // check URL
-        for (Pattern pat : mCheckURL) {
-            if (pat.matcher(url).find()) {
-                // target URL => check redirect again
-                debuglog("check again");
-                mRedirectChecker = new RedirectChecker(url, this);
-                return;
-            }
-        }
-        // not target URL
+    public void onRedirect(final String url) {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.app_name))
+                .setMessage(getString(R.string.redirecting_to) + "\n" + url)
+                .setPositiveButton(getString(R.string.go),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                    int which) {
+                                // check URL
+                                for (Pattern pat : mCheckURL) {
+                                    if (pat.matcher(url).find()) {
+                                        // target URL => check redirect again
+                                        debuglog("check again");
+                                        mRedirectChecker = new RedirectChecker(url,
+                                                UrlCheckActivity.this);
+                                        return;
+                                    }
+                                }
+                                // not target URL
 
-        // open URL
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
-        finish();
+                                // open URL
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setData(Uri.parse(url));
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                .setNegativeButton(getString(R.string.nogo),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                    int which) {
+                                finish();
+                            }
+                        }).create().show();
     }
 
     /**
