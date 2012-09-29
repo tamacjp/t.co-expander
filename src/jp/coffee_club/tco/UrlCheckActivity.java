@@ -16,6 +16,9 @@ public class UrlCheckActivity extends Activity
     /** logcat tag */
     private static final String TAG = "StartActivity";
 
+    /** Intent extra from twicca */
+    public static final String EXTRA_EXPANDED_URL = "expanded_url";
+
     /** target URL pattern */
     private static final Pattern mCheckURL[] = new Pattern[] {
             Pattern.compile("^http://bit\\.ly/"),
@@ -47,19 +50,17 @@ public class UrlCheckActivity extends Activity
             return;
         }
         String url = data.toString();
+        debuglog("input URL: " + url);
 
-        // show progress
-        mProgess = new ProgressDialog(this);
-        mProgess.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                finish();
-            }
-        });
-        mProgess.show();
+        Object expanded_url = getIntent().getExtras().get(EXTRA_EXPANDED_URL);
+        if (expanded_url != null) {
+            // expanded_url is android.net.Uri?
+            // http://twitter.com/tamacjp/status/251882983202635778
+            url = expanded_url.toString();
+            debuglog("expanded_url: " + url);
+        }
 
-        // check URL redirect
-        mRedirectChecker = new RedirectChecker(url, this);
+        onRedirect(url);
     }
 
     /**
@@ -94,8 +95,7 @@ public class UrlCheckActivity extends Activity
         for (Pattern pat : mCheckURL) {
             if (pat.matcher(url).find()) {
                 // target URL => check redirect again
-                debuglog("check again");
-                mRedirectChecker = new RedirectChecker(url, this);
+                checkUrl(url);
                 return;
             }
         }
@@ -120,6 +120,28 @@ public class UrlCheckActivity extends Activity
             // we can startActivity() with original URL.
             // but into an infinite loop in the worst case.
         }
+    }
+
+    /**
+     * start check URL
+     *
+     * @param url
+     */
+    private void checkUrl(String url) {
+        if (mProgess == null) {
+            // show progress
+            mProgess = new ProgressDialog(this);
+            mProgess.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    finish();
+                }
+            });
+            mProgess.show();
+        }
+
+        // URL redirect
+        mRedirectChecker = new RedirectChecker(url, this);
     }
 
     /**
