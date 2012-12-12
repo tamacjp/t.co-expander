@@ -52,7 +52,8 @@ public class UrlCheckActivity extends Activity
         String url = data.toString();
         debuglog("input URL: " + url);
 
-        Object expanded_url = getIntent().getExtras().get(EXTRA_EXPANDED_URL);
+        Bundle extras = getIntent().getExtras();
+        Object expanded_url = (extras != null) ? extras.get(EXTRA_EXPANDED_URL) : null;
         if (expanded_url != null) {
             // expanded_url is android.net.Uri?
             // http://twitter.com/tamacjp/status/251882983202635778
