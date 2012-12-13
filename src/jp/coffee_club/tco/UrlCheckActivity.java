@@ -27,6 +27,7 @@ public class UrlCheckActivity extends Activity
             Pattern.compile("^http://goo\\.gl/"),
             Pattern.compile("^http://youtu\\.be/"),
             Pattern.compile("^http://htn\\.to/"),
+            Pattern.compile("^http://t\\.co/"),
             // TODO: load from list or on/off setting
     };
 
